@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "vite --config ./Frontend/vite.config.js"
+  },
+  "dependencies": {
+    "http-proxy-middleware": "^2.0.6"
+  },
+  "devDependencies": {
+    "vite": "^5.0.10"
+  }
+}
