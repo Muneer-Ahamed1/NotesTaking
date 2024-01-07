@@ -50,13 +50,15 @@ const login = asyncHandler(async (req, res) => {
             const option = {
                 maxAge: 3600000,
                 httpOnly: true,
-                secure: true,
+                secure:true,
                 sameSite: 'None', // Adjust based on your requirements
 
             }
             const data = {
                 accessToken: accessToken,
                 refreshToken: refreshToken,
+                "Email":req.body.email,
+                "userName":user.userName,
                 "userId": user._id
             }
             res.cookie("accessToken", accessToken, option);
@@ -77,7 +79,6 @@ const logout = asyncHandler(async (req, res) => {
     const option = {
         maxAge: 0,
         httpOnly: true,
-        secure: true
     }
     
     res.cookie('accessToken', null, option)

@@ -1,11 +1,15 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { ArrowRight } from 'lucide-react'
 import {loginSlice} from "../userSlice"
 import { useDispatch, useSelector } from 'react-redux'
+import Cookies from "js-cookie"
+import { useNavigate } from 'react-router-dom'
 export default function Login() {
     const dispatch=useDispatch();
     const[formData,setFormData]=useState({});
     const error=useSelector((state)=>state.User.error);
+    const isLogin=useSelector((state)=>state.User.isLogin);
+
     console.log(error);
     const onSubmitForm=(e)=>{
         e.preventDefault();
@@ -13,7 +17,14 @@ export default function Login() {
         dispatch(loginSlice(formData));
 
     }
+    const navigate=useNavigate();
+  useEffect(()=>{
+    if(isLogin) {
+      navigate("/dashboard")
+      
 
+    }
+  },[isLogin])  
   return (
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24 bg-slate-50">

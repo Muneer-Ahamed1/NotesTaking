@@ -1,23 +1,26 @@
 const Note = require("../model/Note");
-const noteAdd = async (req, res) => {
+const ApiError=require("../utils/ApiError");
+const noteAdd = async (req, res,next) => {
     const note = req.body;
     try {
 
         const newNote = Note({ ...note, user: req.user.id });
         await newNote.save();
-        res.status(201).json(newNote);
+        res.status(200
+            ).json("Your is Note is added");
     }
     catch (e) {
-        console.log(e);
+        next(new ApiError("Note is not added due to some reason",404));
     }
 
 
 }
 
-const noteGetAll = async (req, res) => {
+const noteGetAllUser = async (req, res) => {
     const userId=req.user.id;
     console.log(userId)
-    const notes = await Note.find({ user: userId });
+    let notes = await Note.find({user:userId}).populate('user');
+
     
     if (!notes) {
         return res.status(404).json('No notes found');
@@ -25,6 +28,19 @@ const noteGetAll = async (req, res) => {
         res.status(200).json(notes);
     }
 }
+
+ const noteGetAll = async (req, res) => {
+     const userId=req.user.id;
+     console.log(userId)
+     let notes = await Note.find({}).populate('user');
+
+    
+     if (!notes) {
+         return res.status(404).json('No notes found');
+     } else {
+         res.status(200).json(notes);
+    }
+ }
 
 const filterNotes = async (req, res) => {
     try {
@@ -78,7 +94,7 @@ const deleteNoteById=async(req,res)=>{
     if(!note) {
         return res.status(400).send("The note with the given ID was not found.");
     }
-    res.status(200).send("The note has been deleted")
+    res.status(200).send(req.params.id);
 }
 //edit by id
 const editNoteById=async(req,res)=>{
@@ -93,4 +109,4 @@ const editNoteById=async(req,res)=>{
 
 
 
-module.exports = { noteAdd,noteGetAll,filterNotes,getNotesById,deleteNoteById,editNoteById };
+module.exports = { noteAdd,noteGetAll,filterNotes,getNotesById,deleteNoteById,editNoteById,noteGetAllUser };

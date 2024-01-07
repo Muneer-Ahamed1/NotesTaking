@@ -10,6 +10,7 @@ const user = require("./routes/User");
 const customError = require("./middleware/customError")
 const serverError = require("./middleware/serverError");
 const category = require("./routes/Category");
+const comment=require("./routes/Comment");
 const cors = require("cors");
 
 app.use(cors({
@@ -32,6 +33,12 @@ app.use("/api/user", user)
 app.use("/api/note", note);
 app.use("/api/likedNotes", Liked)
 app.use("/api/category", category);
+app.use("/api/comment",comment);
+app.use("/api/removeCookie",(req,res)=>{
+    res.clearCookie("accessToken")
+    res.clearCookie("refreshToken");
+    res.status(200).json({message:"Logged out successfully!"});
+})
 app.get("/", (req, res) => {
     res.status(200).send("working")
 })

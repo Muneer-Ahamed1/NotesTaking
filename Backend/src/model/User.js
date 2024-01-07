@@ -52,7 +52,7 @@ userSchema.methods.generateAccessToken = function () {
     const email = this.email
     const id = this._id;
     const payload = { email, id };
-    const accessToken = jwt.sign(payload, process.env.AccessTokenPassword,{expiresIn:'2m'});
+    const accessToken = jwt.sign(payload, process.env.AccessTokenPassword,{expiresIn:'60m'});
     return accessToken;
 }
 
@@ -60,7 +60,7 @@ userSchema.methods.generateRefreshToken = function () {
     const email = this.email
     const id = this._id;
     const payload = { email, id };
-    const refreshToken = jwt.sign(payload, process.env.RefreshTokenPassword, { expiresIn: '60m' })
+    const refreshToken = jwt.sign(payload, process.env.RefreshTokenPassword, { expiresIn: '1200m' })
     return refreshToken;
 
 }

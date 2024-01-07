@@ -4,7 +4,9 @@
     "start": "vite --config ./Frontend/vite.config.js"
   },
   "dependencies": {
-    "http-proxy-middleware": "^2.0.6"
+    "http-proxy-middleware": "^2.0.6",
+    "js-cookie": "^3.0.5",
+    "react-animated-heart": "^0.0.8"
   },
   "devDependencies": {
     "vite": "^5.0.10"

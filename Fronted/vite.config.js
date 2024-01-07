@@ -8,13 +8,6 @@ export default defineConfig({
 
   server: {
     port: 5000,  // Specify the port for Vite dev server
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001/', // Backend server URL
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-        secure:false
-      },
-    },
+   
   },
 });

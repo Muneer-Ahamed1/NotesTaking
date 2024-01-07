@@ -3,7 +3,7 @@ const ApiError=require("../utils/ApiError")
 const getCategory=async(req,res,next)=>{
     try{
        const category= await Category.find({});
-       res.status(201).json(category);
+       res.status(200).json(category);
     }
     catch(e){
         next(new ApiError(e.errors,404));

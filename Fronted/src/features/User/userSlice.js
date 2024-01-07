@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { register,login } from "./userApi";
+import { asyncThunkCreator, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { register,login,logout } from "./userApi";
 
 export const registerSlice = createAsyncThunk('user/register', async (data, thunkAPI) => {
     try {
@@ -15,14 +15,24 @@ export const loginSlice=createAsyncThunk("user/login",async (data,thunkAPI)=>{
     try{
         const response=await login(data);
         console.log(response);
-        return response.data;
+        return response;
     }
     catch(e) {
         console.log(e.response.data.message);
         throw thunkAPI.rejectWithValue(e.response.data.message);
     }
 })
+export const logoutSlice=createAsyncThunk("user/logout",async ()=>{
+    try{
+        const response=await logout();
+        return response.message;
 
+    }
+    catch(e){
+        throw thunkAPI.rejectWithValue(e.message);
+    }
+
+})
 const user = createSlice({
     name: "user",
     initialState: {
@@ -31,6 +41,9 @@ const user = createSlice({
             err: false,
             message: '',
         },
+        isLogin:false,
+        isLoginInfo:null
+
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -40,7 +53,6 @@ const user = createSlice({
             })
             .addCase(registerSlice.fulfilled, (state, { payload }) => {
                 state.loading = false;
-                // Handle the fulfilled case if needed
             })
             .addCase(registerSlice.rejected, (state, { payload }) => {
                 state.error.message = payload
@@ -52,10 +64,15 @@ const user = createSlice({
             })
             .addCase(loginSlice.fulfilled,(state,{payload})=>{
               state.loading=false; 
+              state.isLogin=true;
+              state.isLoginInfo=payload.data;
             })
             .addCase(loginSlice.rejected,(state,{payload})=>{
                 state.error.err=true;
                 state.error.message=payload;
+            })
+            .addCase(logoutSlice.fulfilled,(state,{payload})=>{
+                state.isLogin=false;
             })
     },
 });
